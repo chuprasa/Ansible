@@ -1,0 +1,39 @@
+Before 10Years - Every Company have SysAdmins - Configuration Management
+Every Company have sysadmins - They have own onpremises setup,own vms
+Example Comapny - sysadmin - Own onpremises setup - 5Physical servers - 4 Linux & 1window - primary activity of Sysadmin is,
+Distribution(centos7) installed on Linux machines 3years back there is no update, no maintainenece & version mandatory
+(1)up-to-date(supported versions)
+(2)packages are also up-to-date
+(3)Java version installed or not all the packages
+(4)Mount,volume
+Above one is completely manual. They maintained scripts also but its very hectic to sysadmins
+The life of sysadmins are Hell.
+SystemAdmin->configuration management(its completely manual).its veryhectic to sysadmins(2 are in linux servers, 2 are in windows, 2are in debian).Its completely manual activity.
+
+Then came configuration managemen tool like Ansible.
+Challenge of puppet and chef are needs to learn new palguages like python and Ruby. Learning curve for the sysadmins.They were not agentless in the architecture.
+Sysadmins will do they will go to each machine and they need to install agent.
+Example Software install on all the target machines.
+Master & Target Servers - They will install agent on all the worker nodes manually.
+
+Ansible came into the picture -> Ansible said sysadmins should know only yaml.write playbooks in ansible world(yaml) -> we are agentless(Dont install any softwares in target machines) -> Call ControlNodes & ManageNodes
+
+ControlNodes - Installed Ansible software is ControlNode and install ansible in particular vm and we can manage configurations of all the other machines called Managed Nodes. 
+ManageNodes - Manage configurations of all the other machines called Managed Nodes. 
+
+Example Install java on all the vms -> write yaml file and place in Ansible installed machine and run ansible command reflects changes on all the managed nodes(Any distribution linux or windows....).
+
+Can Ansible only do configuration management? No
+
+Ansible stared as configuration management tool but its powerful automation platform. Ansible acan also do provisioning(EC2Instance/s3/...). Ansible is widely used in deployment as well and Network automation as well.
+Ansible is automation platform where ansible can help to provisioning,conf mgmt...... It can also be used in Network automation.
+
+Example: Install Java on all the worker nodes.
+Shell and Python is not possible.
+Ansible - Install ansible on control node(Tell the control node theses are my vms in configuration file called as Inventory). Controlnodes reads the inventory understands that these are 100vms. 
+
+Talking to API'S and Talking to Tools like Jira, Gihub
+
+On your controlnode python installed and managed nodes also python installed. Yaml file takes ansible and it converts yaml file into python and executes the python modules in the managed nodes(Python should be available in both control nodes and managed nodes)
+
+
