@@ -1,0 +1,44 @@
+If amazon-linux-extras and epel-release are both missing, you are NOT on Amazon Linux 2 — you are almost certainly on Amazon Linux 2023 (AL2023).
+Amazon Linux 2023 does NOT support amazon-linux-extras or epel-release.
+Packages are installed only through dnf and the new modular repositories.
+
+Below are the correct installation steps for both systems so you can pick the one that matches your machine.
+
+Check Your OS Version First:
+---------------------------
+#cat /etc/os-release
+If Amazon Linux 2023:
+NAME="Amazon Linux"
+VERSION="2023"
+
+AL2023 does not ship Ansible in its repos. The recommended way is to install via pip.
+Install Python & pip:
+#sudo dnf install -y python3 python3-pip
+Install Ansible via pip
+#sudo pip3 install ansible
+Verify version
+#ansible --version
+ansible [core 2.15.3]
+  config file = None
+  configured module search path = ['/root/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python3.9/site-packages/ansibleUser -> provide instructions to 
+  ansible collection location = /root/.ansible/collections:/usr/share/ansible/collections
+  executable location = /usr/bin/ansible
+  python version = 3.9.24 (main, Oct 20 2025, 00:00:00) [GCC 11.5.0 20240719 (Red Hat 11.5.0-5)] (/usr/bin/python3.9)
+  jinja version = 3.1.4
+  libyaml = True
+
+PasswordLess Authentication:
+---------------------------
+User -> Provide instructions to ansible that was installed in controlnode or master node(provide instructions through yaml or adhoc commands)
+Instructions like to install nginx on managed nodes.
+When ansi  ble tries to execute the instructions but all managed nodes getting blocked(Authentication error/issue).
+2ways to provide authentication(password, ssh keys(public&private keys)).
+
+Prerequisite is everytime dont want to ask password...........
+Setup passwordleass authentication between controlnodes and managed nodes.
+what passwordless auth?
+Its a mechanism where vmA tell to vmB (Anytime gettnig request from A dont ask password).
+There is one time activity.
+
+
