@@ -36,4 +36,15 @@ Talking to API'S and Talking to Tools like Jira, Gihub
 
 On your controlnode python installed and managed nodes also python installed. Yaml file takes ansible and it converts yaml file into python and executes the python modules in the managed nodes(Python should be available in both control nodes and managed nodes)
 
+->Ansible control node will execute instructions on the managed node. But how will ansible control node understand what are the managed nodes?
+There is a way that has to be there that ansible knows what are managed nodes that process is called as Ansible inventory(its just a file).In the inventory file just place all the managed nodes
+
+Inventory can be written in 2 formats.They are:
+-----------------------------------------------
+inventory.ini file ->   It can be any where in the machine (Just place managed nodes ip addresses) -> Just place inventory.ini file in /etc/ansible/hosts folder
+inventory is heart of ansible because it will tell ansible controlnodes to which servers it has to talk hat is ansible managed nodes.
+yaml -> 
+
+#ansible -i inventory.ini  -m ping all
+#ansible -i inventory.ini -m shell -a "apt-get update" all
 
