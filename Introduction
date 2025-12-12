@@ -8,7 +8,7 @@ Distribution(centos7) installed on Linux machines 3years back there is no update
 (4)Mount,volume
 Above one is completely manual. They maintained scripts also but its very hectic to sysadmins
 The life of sysadmins are Hell.
-SystemAdmin->configuration management(its completely manual).its veryhectic to sysadmins(2 are in linux servers, 2 are in windows, 2are in debian).Its completely manual activity.
+SystemAdmin->configuration management(its completely manual).its very hectic to sysadmins(2 are in linux servers, 2 are in windows, 2are in debian).Its completely manual activity.
 
 Then came configuration managemen tool like Ansible.
 Challenge of puppet and chef are needs to learn new palguages like python and Ruby. Learning curve for the sysadmins.They were not agentless in the architecture.
@@ -45,6 +45,227 @@ inventory.ini file ->   It can be any where in the machine (Just place managed n
 inventory is heart of ansible because it will tell ansible controlnodes to which servers it has to talk hat is ansible managed nodes.
 yaml -> 
 
-#ansible -i inventory.ini  -m ping all
-#ansible -i inventory.ini -m shell -a "apt-get update" all
 
+Ansible: https://capgemini.udemy.com/course/learn-ansible/learn/lecture/16681102#overview
+Introduction to Ansible:
+Introduction and Configuration
+Ansible Inventory
+Ansible facts and Variables
+Ansible PlayBooks
+Ansible Modules and Plugins
+Ansible Handlers
+Ansible Templates
+Reusing Ansible Content
+
+Introduction to Ansible
+Setting up Ansible on Sever
+Introduction to Yaml
+Inventory Files
+Playbooks
+Variables
+Conditionals
+Loops
+Roles
+
+Ansible Configuration Files:
+---------------------------
+/etc/ansible/ansible.cfg
+ansible.cfg is divided in to several sections:
+[defaults]
+[inventory]
+[privilege_Section]
+[paramiki_connection]
+[ssh_connection]
+[persistent_connection]
+[colors]
+
+/etc/ansible/ansible.cfg -> /opt/web/playbooks[/opt/web/playbooks/ansible.cfg]
+                         -> /opt/db-playbooks[/opt/db-playbooks/ansible.cfg]
+                          > /opt/network-playbooks[/opt/network-playbooks/ansible.cfg]
+This is one approach for overriding ansible.cfg
+$ANSIBLE_CONFIG=/opt/ansible-web.config
+
+What is YAML?
+-------------
+XML:
+<Servers>
+----
+----
+</Servers>
+
+Example of Dictionary:
+----------------------
+Car is a Single Object and it has properties such as [color,model,price,Transmission.] To store different properties in a single object we use a dictionary.
+Color: Blue
+Model: Corvette
+Transmission: Manual
+Price: $20000
+For Example if we split model in to [Name:Corvette, Year:1995] then Dictionary should be,
+Color: Blue
+Model: Corvette
+  Name: Corvette
+  Year: 1995
+Transmission: Manual
+Price: $20000
+Dictionary vs List vs List of Dictionaries:
+-------------------------------------------
+List of Strings:
+===============
+- Blue Corbette
+--------------------------------------
+- Color: Blue
+  Model:
+    Name: Corvette
+    Model: 1995
+  Transmission: Manual 
+  Price: $20000
+--------------------------------------
+- Grey Corbette
+- Red Corbette
+- Green Corbette
+- Blue Corbette
+- Black Corbette
+
+List of Dictionaries/Map
+--------------------------------------
+- Color: Blue
+  Model:
+    Name: Corvette
+    Model: 1995
+  Transmission: Manual 
+  Price: $20000
+--------------------------------------
+
+Create sample Yaml Files:
+-------------------------
+
+Ansible Inventory:
+-----------------
+Ansible can work with one or multiple systems.
+Agentless - No need to install any additonal software on the target machines to be able to work with ansible.
+Information about target machines stored in an inventory file.
+If we will not create any new inventory file ansible uses default inventory file located in /etc/ansible/hosts locations
+
+Single Inventory file:
+----------------------
+server1.company.com
+server2.company.com
+[mail]
+server1.company.com
+server1.company.com
+[db]
+server1.company.com
+server1.company.com
+[web]
+server1.company.com
+server1.company.com
+
+More on Inventory Files:
+------------------------
+Inventory Parameters:
+--------------------
+web  ansible_host=server1.company.com ansible_connection=ssh ansible_user=root
+db   ansible_host=server2.company.com ansible_connection=winrm
+mail ansible_host=server3.company.com
+web2 ansible_host=server4.company.com
+ansible_host inventory parameter is used to specify the FQDN or IPA ddress of the server.
+
+localhost ansible_connection = localhost
+
+ansible_connection - ssh/winrm/localhost
+ansible_user - 22/9856
+ansible_port - root/administartor
+ansible_ssh_pass - Password
+
+Why do we need different inventory formats?
+-------------------------------------------
+Start-up Company -> FewServers -> [web hosting & Database management]
+
+Different types of Inventory Format Types:
+------------------------------------------
+INI & YAML
+
+INI Format:
+----------
+[webservers]
+web1.example.com
+web2.example.com
+
+[dbservers]
+db1.example.com
+db2.example.com
+
+YAML Format:
+-----------
+all:
+  children:
+    webservers:
+      hosts:
+        web1.example.com
+        web2.example.com
+    dbservers:
+      hosts:
+        db1.example.com
+        db2.example.com
+
+Grouping and Parent Child RelationShips Examples [INI]
+------------------------------------------------------
+[webservers:children]
+webservers_us
+webservers_eu
+
+[webservers_us]
+server1_us.com  ansible_host=192.168.8.101
+server2_us.com  ansible_host=192.168.8.102
+
+[webserver_eu]
+server1_eu.com  ansible_host=192.168.8.101
+server2_eu.com  ansible_host=192.168.8.102
+
+Grouping and Parent Child RelationShips Examples [YAML]
+-------------------------------------------------------
+all:
+  children:
+    webserver:
+      children:
+        webserver_us:
+          hosts:
+            server1_us.com:
+              ansible_hosts: 192.168.20.1
+            server2_us.com:
+              ansible_hosts: 192.168.20.1
+        webserver_eu
+          hosts:
+            server1_eu.com:
+              ansible_hosts:192.68.21.1
+            server2_eu.com:
+              ansible_hosts:192.168.12.1
+
+Ansible Variables:
+-----------------
+Example is Patches 100 of servers at a time
+
+Variables Types:
+---------------
+(1)String Variables
+(2)Number Variables
+
+(1)String Variables:
+--------------------
+(1)String variables in ansible are sequences of characters
+They can be defined in a playbook,inventory or passed as a command line arguments
+[username: "admin"]
+(2)Number Variables:
+Number Variables can hold integer or floating point values.
+[max_connections: 100]
+(3)Boolean Variables: true or false
+[debug_mode: true]
+(4)List Variables: List variables in Ansible can hold an ordered collection of values.
+packages:
+  - nginx
+  - postgresql
+  - git
+(5)Dictionary Variables: It can hold a collection of key-value pairs.
+user:
+  name: "admin"
+  password: "secret"
